@@ -39,3 +39,40 @@ void draw (){
   }
   
 }
+/* segunda solução
+void setup() {
+  size(800, 600, P2D);
+}
+
+void setupCoordinateSystem() {
+  translate(width / 2, height / 2);
+  scale(30, -30);
+}
+
+float angulo=0;
+float xp=1,yp=0;
+float teta=0;
+float vel = (PI/2)/60;
+void draw() {
+  setupCoordinateSystem();
+  background(255);
+  
+  stroke(0,255,0);
+  point(0,0);
+  point(1,0);
+  point(-2,0);
+  
+  stroke(0,0,255);
+  point(xp,yp);
+  
+  angulo=min(teta, 2*PI-teta);
+  
+  xp= (angulo/PI +1)*cos(teta);
+  yp= (angulo/PI +1)*abs(sin(teta));
+  
+  teta = (teta+vel)%(2*PI);
+}
+
+
+
+*/
