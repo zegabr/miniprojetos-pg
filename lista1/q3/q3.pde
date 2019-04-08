@@ -23,7 +23,7 @@ void desenhaRampaEEixos() {
   stroke(0, 0, 255);//z blue
   point(0, 0, 10);
   line(0, 0, 100, 0, 0, 0);
-  ///
+
   point(bx, by, bz);
   point(ax, ay, az);
   point(cx, cy, cz);  
@@ -44,7 +44,7 @@ float ax=0, ay=0, az=0,
   cx=0, cy=8, cz=6, 
   dx=10, dy=8, dz=6 ;
 float tetacentro=0, tetaroda=0;
-int slower=10;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
+int slower=5;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
 int k=0;
 
 
