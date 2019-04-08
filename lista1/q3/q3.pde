@@ -2,14 +2,24 @@ void setup() {
   size(1000, 1000, P3D);
   background(255);
 }
-  float vX = 0.01, vY = 0.01;
+
+
+float vX = 0.01, vY = 0.01;
 void howToSeeThings() {
   background(255);
   translate(width / 2, height / 2);
-  scale(30, -30);
+
+  scale(35, -35);
+  /*
+  rotateX(vX*mouseX);
+  rotateY(vY*mouseY);
+  */
   rotateX(-PI/3);
-  rotateY(-PI/3);
+  rotateZ(-PI/3);
+a
 }
+
+
 void desenhaRampaEEixos() {
   //desenhando eixos para melhor vizualizacao
   stroke(255, 0, 0);//X red
@@ -23,7 +33,7 @@ void desenhaRampaEEixos() {
   stroke(0, 0, 255);//z blue
   point(0, 0, 10);
   line(0, 0, 100, 0, 0, 0);
-  ///
+
   point(bx, by, bz);
   point(ax, ay, az);
   point(cx, cy, cz);  
@@ -35,7 +45,97 @@ void desenhaRampaEEixos() {
   line(dx, dy, dz, cx, cy, cz);
 }
 
+int indo=1;
+float angperna=radians(30);
+float jx=-0.1, jy=0, jz=-0.25;
+void desenhapernas(){
+//aqui pernas está no centro, alinhado com xz
+ stroke(50,50,0);
+pushMatrix();  
+//perna (only need one muahaha)
+rotate(angperna);
+line(0,0,0,jx,jy,jz);
+line(jx,jy,jz,0,0,-0.5);
+popMatrix();
 
+angperna++;
+}
+
+void malabares(){
+  //aqui a origem está no topo do tronco
+ pushMatrix();
+ translate(0.5,0,sin(radians(60)));
+ pushMatrix();
+ rotateX(angperna/8);
+ stroke(222,0,0);
+ point(0,-1,-tan(radians(30)));
+ stroke(0,222,0);
+ point(0,1,-tan(radians(30)));
+ stroke(0,0,222);
+ point(0,0,2*sin(radians(60))-tan(radians(30)));
+ popMatrix();
+ 
+ popMatrix();
+}
+
+void palhacada(){
+  pushMatrix();
+  
+  stroke(252,0,0);
+  line(0,0,1.5, 0,0,2.5);//corpo tam=1
+  
+pushMatrix();
+
+  translate(0,0,3);
+   
+  stroke(0,255,0);
+  sphere(0.2);//cabeca
+  pushMatrix();
+  translate(0.3,0,0);
+  stroke(255,0,0);
+  sphere(0.015);
+  popMatrix();
+  
+  
+  stroke(0);
+  
+  pushMatrix();
+  translate(0,0.2,0.2);
+  sphere(0.1);//orelha 1
+  popMatrix();
+  
+  pushMatrix();
+  translate(0,-0.2,0.2);
+  sphere(0.1);//orelha 1
+  popMatrix();
+  
+
+popMatrix();
+
+  pushMatrix();
+ 
+  translate(0,0,2.5);//topo do tronco
+  
+  malabares();
+  
+  stroke(255,95,192);
+  line(0,-1,0,0,1,0);//bracos
+  stroke(100,0,30);
+  line(0,-1,0,0,-1,0.5);//mao direita
+  line(0,1,0,0,1,0.5);//mao esquerda
+  
+  popMatrix();
+  
+  pushMatrix();
+  translate(0,0,1.5);//partes baixas
+  desenhapernas();
+  popMatrix();
+  
+  
+  
+  
+  popMatrix();
+}
 
 
 
@@ -44,16 +144,16 @@ float ax=0, ay=0, az=0,
   cx=0, cy=8, cz=6, 
   dx=10, dy=8, dz=6 ;
 float tetacentro=0, tetaroda=0;
+int k=1;
+
+
+
+//================VARIAVEIS DE CONTROLE==================
 int slower=10;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
-int k=0;
-
-
-
+boolean PALHACADA=true; //altere esta variavel e veja a zuera
+//=======================================================
 void draw () {
-
- 
-
-  //o draw reseta o sistema de coordenadas a cada vez que é chamado
+  
   if (k==61 && slower==1)return;
   k++;
 
@@ -73,7 +173,7 @@ void draw () {
   stroke(0, 255, 0);//verde
   point(0, 0, 0);//centro roda
   //desenhar palhaco aqui
-  
+  if(PALHACADA)palhacada();
 
   pushMatrix();//desenhando roda isoladamente e alinhando perpendicularmente com a rampa
   stroke(255, 255, 0);//amarelo
@@ -85,6 +185,7 @@ void draw () {
   rotateY(tetaroda);
   stroke(255, 0, 0);
   point(0, 0, -1);//ponto da roda
+  
   popMatrix();
 
 
