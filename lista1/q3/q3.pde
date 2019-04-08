@@ -62,18 +62,15 @@ angperna++;
 void malabares(){
   //aqui a origem está no topo do tronco
  pushMatrix();
- translate(0.5,0,sin(radians(30)));
- point(0,0,0);
+ translate(0.5,0,sin(radians(60)));
  pushMatrix();
- rotateX(angperna/10);
-
- 
+ rotateX(angperna/8);
  stroke(222,0,0);
- point(0,-1,0);
+ point(0,-1,-tan(radians(30)));
  stroke(0,222,0);
- point(0,1,0);
+ point(0,1,-tan(radians(30)));
  stroke(0,0,222);
- point(0,0,tan(radians(60)));
+ point(0,0,2*sin(radians(60))-tan(radians(30)));
  popMatrix();
  
  popMatrix();
@@ -91,6 +88,13 @@ pushMatrix();
    
   stroke(0,255,0);
   sphere(0.2);//cabeca
+  pushMatrix();
+  translate(0.3,0,0);
+  stroke(255,0,0);
+  sphere(0.015);
+  popMatrix();
+  
+  
   stroke(0);
   
   pushMatrix();
@@ -138,16 +142,16 @@ float ax=0, ay=0, az=0,
   cx=0, cy=8, cz=6, 
   dx=10, dy=8, dz=6 ;
 float tetacentro=0, tetaroda=0;
-int slower=20;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
 int k=1;
 
 
 
+//================VARIAVEIS DE CONTROLE==================
+int slower=10;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
+boolean PALHACADA=true; //altere esta variavel e veja a zuera
+//=======================================================
 void draw () {
-
- 
-
-  //o draw reseta o sistema de coordenadas a cada vez que é chamado
+  
   if (k==61 && slower==1)return;
   k++;
 
@@ -167,7 +171,7 @@ void draw () {
   stroke(0, 255, 0);//verde
   point(0, 0, 0);//centro roda
   //desenhar palhaco aqui
-  palhacada();
+  if(PALHACADA)palhacada();
 
   pushMatrix();//desenhando roda isoladamente e alinhando perpendicularmente com a rampa
   stroke(255, 255, 0);//amarelo
