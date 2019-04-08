@@ -7,8 +7,12 @@ void howToSeeThings() {
   background(255);
   translate(width / 2, height / 2);
   scale(30, -30);
+  /*
   rotateX(vX*mouseX);
   rotateY(vY*mouseY);
+  */
+  rotateX(-PI/3);
+  rotateZ(-PI/3);
 }
 void desenhaRampaEEixos() {
   //desenhando eixos para melhor vizualizacao
@@ -35,7 +39,27 @@ void desenhaRampaEEixos() {
   line(dx, dy, dz, cx, cy, cz);
 }
 
-
+void palhacada(){
+  pushMatrix();
+  stroke(252,0,0);
+  line(0,0,1.5, 0,0,2.5);//corpo tam=1
+  
+  pushMatrix();
+  translate(0,0,3);
+  stroke(0,255,0);
+  sphere(0.2);//cabeca
+  popMatrix();
+  
+  pushMatrix();
+  translate(0,0,2.5);
+  stroke(255,95,192);
+  line(0,-1,0,0,1,0);//bracos tam 
+  line(0,0,0,0,0,0);//mao direita
+  line(0,0,0,0,0,0);//mao esquerda
+  popMatrix();
+  
+  popMatrix();
+}
 
 
 
@@ -73,7 +97,7 @@ void draw () {
   stroke(0, 255, 0);//verde
   point(0, 0, 0);//centro roda
   //desenhar palhaco aqui
-  
+  palhacada();
 
   pushMatrix();//desenhando roda isoladamente e alinhando perpendicularmente com a rampa
   stroke(255, 255, 0);//amarelo
@@ -85,6 +109,7 @@ void draw () {
   rotateY(tetaroda);
   stroke(255, 0, 0);
   point(0, 0, -1);//ponto da roda
+  
   popMatrix();
 
 
