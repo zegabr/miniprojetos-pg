@@ -16,15 +16,15 @@ float tetainf = 0;
 void draw (){
   setupCoordinateSystem();
   background(255);
-  point(OmbroX,OmbroY);
   stroke(255,0,0);
   line (OmbroX,OmbroY,CutoX, CutoY);
-  stroke(0);
-  point(CutoX,CutoY);
-  stroke(255,0,0);
   line (CutoX,CutoY,MaoX,MaoY);
+ 
+  
   stroke(0);
   point(MaoX,MaoY);
+  point(OmbroX,OmbroY);
+  point(CutoX,CutoY);
 
 
   if(tetasup<PI/6){
