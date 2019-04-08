@@ -7,8 +7,8 @@ void howToSeeThings() {
   background(255);
   translate(width / 2, height / 2);
   scale(30, -30);
-  rotateX(vX*mouseX);
-  rotateY(vY*mouseY);
+  rotateX(-PI/3);
+  rotateY(-PI/3);
 }
 void desenhaRampaEEixos() {
   //desenhando eixos para melhor vizualizacao
