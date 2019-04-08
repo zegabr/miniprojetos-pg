@@ -39,6 +39,14 @@ void desenhaRampaEEixos() {
   line(dx, dy, dz, cx, cy, cz);
 }
 
+boolean indo;
+void desenhapernas(){
+//aqui pernas está no centro, alinhado com xz
+pushMatrix();  
+
+  
+popMatrix();
+}
 void palhacada(){
   pushMatrix();
   
@@ -75,7 +83,7 @@ popMatrix();
   
   pushMatrix();
   translate(0,0,1.5);//partes baixas
-  
+  desenhapernas();
   popMatrix();
   
   
