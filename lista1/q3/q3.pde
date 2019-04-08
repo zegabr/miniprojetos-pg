@@ -2,13 +2,13 @@ void setup() {
   size(1000, 1000, P3D);
   background(255);
 }
-
+  float vX = 0.01, vY = 0.01;
 void howToSeeThings() {
   background(255);
   translate(width / 2, height / 2);
   scale(30, -30);
-  rotateX(-PI/3);
-  rotateZ(-PI/3);
+  rotateX(vX*mouseX);
+  rotateY(vY*mouseY);
 }
 void desenhaRampaEEixos() {
   //desenhando eixos para melhor vizualizacao
@@ -44,12 +44,14 @@ float ax=0, ay=0, az=0,
   cx=0, cy=8, cz=6, 
   dx=10, dy=8, dz=6 ;
 float tetacentro=0, tetaroda=0;
-int slower=2;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
+int slower=10;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
 int k=0;
+
 
 
 void draw () {
 
+ 
 
   //o draw reseta o sistema de coordenadas a cada vez que é chamado
   if (k==61 && slower==1)return;
@@ -70,6 +72,8 @@ void draw () {
   translate(0, -5, 1);//origem no centro da roda que está alinhada com XZ
   stroke(0, 255, 0);//verde
   point(0, 0, 0);//centro roda
+  //desenhar palhaco aqui
+  
 
   pushMatrix();//desenhando roda isoladamente e alinhando perpendicularmente com a rampa
   stroke(255, 255, 0);//amarelo
