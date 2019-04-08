@@ -41,15 +41,30 @@ void desenhaRampaEEixos() {
 
 void palhacada(){
   pushMatrix();
+  
   stroke(252,0,0);
   line(0,0,1.5, 0,0,2.5);//corpo tam=1
   
-  pushMatrix();
+pushMatrix();
+  
   translate(0,0,3);
   stroke(0,255,0);
   sphere(0.2);//cabeca
+  stroke(0);
+  
+  pushMatrix();
+  translate(0,0.2,0.2);
+  sphere(0.1);//orelha 1
   popMatrix();
   
+  pushMatrix();
+  translate(0,-0.2,0.2);
+  sphere(0.1);//orelha 1
+  popMatrix();
+  
+
+popMatrix();
+
   pushMatrix();
   translate(0,0,2.5);
   stroke(255,95,192);
@@ -57,6 +72,14 @@ void palhacada(){
   line(0,0,0,0,0,0);//mao direita
   line(0,0,0,0,0,0);//mao esquerda
   popMatrix();
+  
+  pushMatrix();
+  translate(0,0,1.5);//partes baixas
+  
+  popMatrix();
+  
+  
+  
   
   popMatrix();
 }
