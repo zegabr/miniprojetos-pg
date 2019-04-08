@@ -6,7 +6,7 @@ void setup() {
 void howToSeeThings() {
   background(255);
   translate(width / 2, height / 2);
-  scale(30, -30);
+  scale(35, -35);
   /*
   rotateX(vX*mouseX);
   rotateY(vY*mouseY);
@@ -39,13 +39,27 @@ void desenhaRampaEEixos() {
   line(dx, dy, dz, cx, cy, cz);
 }
 
-boolean indo;
+int indo=1;
+float angperna=radians(30);
+float jx=-0.1, jy=0, jz=-0.25;
 void desenhapernas(){
 //aqui pernas está no centro, alinhado com xz
-pushMatrix();  
+if(angperna>PI/3 || angperna<-PI/3) indo^=1;
 
+ stroke(50,50,0);
+pushMatrix();  
+//perna1
+rotate(angperna);
+
+line()
+popMatrix();
+pushMatrix();  
+//perna2
   
 popMatrix();
+
+if(indo==1)angperna++;
+else angperna--;
 }
 void palhacada(){
   pushMatrix();
