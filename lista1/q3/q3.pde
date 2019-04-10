@@ -16,7 +16,7 @@ void howToSeeThings() {
   */
   rotateX(-PI/3);
   rotateZ(-PI/3);
-a
+
 }
 
 
@@ -150,7 +150,7 @@ int k=1;
 
 //================VARIAVEIS DE CONTROLE==================
 int slower=10;//quanto maior o slower, mais lento. slower=1 é o padrao pra rodar em 1 seg
-boolean PALHACADA=true; //altere esta variavel e veja a zuera
+boolean PALHACADA=false; //altere esta variavel e veja a zuera
 //=======================================================
 void draw () {
   
