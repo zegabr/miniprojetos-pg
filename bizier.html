@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <script type="application/javascript">
+  var pointx = [];
+  var pointy = [];
+    function setPoint() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        canvas.onclick = function(evt){
+          var rectNav = canvas.getBoundingClientRect();
+          var x = evt.clientX;
+          var y = evt.clientY;
+          
+          pointx.push(x);
+          pointy.push(y);
+          
+          ctx.strokeStyle = "#000000"; //PRETO
+          ctx.beginPath(); //pra começar uma nova figura geometrica
+          ctx.arc(x-425,y-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+          ctx.stroke();
+
+          if(pointx.length>1){
+              ctx.strokeStyle = "#000000"; //preto
+              var ix = pointx.length-1;
+              var iy = pointy.length-1;
+              ctx.moveTo(pointx[ix-1]-425, pointy[iy-1]-10); //move o eixo
+              ctx.lineTo(pointx[ix]-425-1, pointy[iy]-10-1); //cria a linha do eixo até aí
+              ctx.stroke();
+          }
+        }
+      }
+    }
+    function atualizar(){
+      var a = CheckBoxPontos();
+      var b = CheckBoxPoligonos();
+      var c = CheckBoxCurva();
+      if(a){
+          //desenhar pontos
+      }
+      if(b){
+          //desenha retas
+      }
+      if(c){
+          //desenhar curvas
+      }
+    }
+    function CheckBoxPontos() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        var check = document.getElementsByName("pontoControle"); 
+        return check[0].checked;
+      }
+    }
+    function CheckBoxPoligonos() {
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        var check = document.getElementsByName("poligonoControle"); 
+          return check[0].checked;
+      }
+    }
+    function CheckBoxCurva(){
+        var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        var check = document.getElementsByName("Curva"); 
+          return check[0].checked;
+      }
+    }
+    
+    function draw0(){
+      var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+          
+
+      }
+    }
+    function bezier(t, arr, r, index){
+    if(r == 0){
+      return arr[index];
+    } else {
+      return ((1-t)*bezier(t,arr,r-1,index)) + (t*bezier(t,arr,r-1,index+1))
+    }
+  } 
+  </script>
+ </head>
+ <body>
+  <center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
+  <p>
+       <button onclick="setPoint()">Inserir Pontos</button>
+       <button onclick="draw0()">Nova Curva</button>
+       <button onclick="draw1()">Deletar Curva</button>
+       <button onclick="draw2()">Curva Anterior</button>
+       <button onclick="draw3()">Proxima Curva</button>
+   </p>
+       <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
+       <input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
+       <input type="checkbox" name="Curva" checked> Curvas<br><br>
+       <button onclick="atualizar()">Sicronizar</button>
+</body>
+</html>
