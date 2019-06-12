@@ -58,16 +58,16 @@
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 
-        var a = CheckBoxPontos();
-        var b = CheckBoxPoligonos();
-        var c = CheckBoxCurva();
         
         ctx.beginPath(); //pra começar uma nova figura geometrica
         ctx.fillRect(0, 0, 750, 500);
         ctx.stroke();
-
         
-
+        
+        
+        var a = CheckBox("pontoControle");
+        var b = CheckBox("poligonoControle");
+        var c = CheckBox("Curva");
         if(a){
             //desenhar pontos
             for(i=0; i<todasCurva.length; i++){
@@ -95,28 +95,12 @@
         }
       }
     }
-    function CheckBoxPontos() {
+    function CheckBox(nome){
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
-        var check = document.getElementsByName("pontoControle"); 
+        var check = document.getElementsByName(nome); 
         return check[0].checked;
-      }
-    }
-    function CheckBoxPoligonos() {
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-        var check = document.getElementsByName("poligonoControle"); 
-          return check[0].checked;
-      }
-    }
-    function CheckBoxCurva(){
-        var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-        var check = document.getElementsByName("Curva"); 
-          return check[0].checked;
       }
     }
     
