@@ -2,6 +2,33 @@
 <html>
  <head>
   <script type="application/javascript">
+  class Curva{
+    constructor(){
+      //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
+      this.px=[];
+      this.py=[];
+
+      //pontos da curva (curva são retas geradas entre esses pontos)
+      this.cx=[];
+      this.cy=[];
+    }
+    bezier(index,r,t,arr){
+      if(r == 0){
+        return arr[index];
+      } else {
+        return ((1-t)*bezier(index,r-1,t,arr)) + (t*bezier(index+1,r-1,t,arr));
+      }
+    }
+    createcurve(numerodeavaliacoes){
+      for(var t=0; t<=1;t+=1/numerodeavaliacoes){
+        this.cx.push(bezier(0,px.length,t,px));
+        this.cy.push(bezier(0,py.length,t,py));
+      }
+    }
+  }
+  var todasCurvas = [];//array da classe Curva
+  var curvaAtual = 0;
+  
   var pointx = [];
   var pointy = [];
     function setPoint() {
