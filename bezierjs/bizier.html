@@ -27,7 +27,7 @@
     }
   }
   var todasCurvas = [];//array da classe Curva
-  var curvaAtual = 0;
+  var curvaAtual = 0;//indicador da curva atual
 
     function setPoint() {
       var canvas = document.getElementById("canvas");
@@ -46,9 +46,9 @@
           todasCurva[curvaAtual].py.push(y);
           
 
-          alert("aqui1");
-          atualizar();
-          alert("aqui2");
+          // alert("aqui1");
+          //atualizar();
+          // alert("aqui2");
 
         }
       }
@@ -58,7 +58,7 @@
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 
-        
+        ctx.strokeStyle = "#FFFFFF"; // BRANCO
         ctx.beginPath(); //pra começar uma nova figura geometrica
         ctx.fillRect(0, 0, 750, 500);
         ctx.stroke();
@@ -67,10 +67,11 @@
         
         var a = CheckBox("pontoControle");
         var b = CheckBox("poligonoControle");
-        var c = CheckBox("Curva");
+        var c = CheckBox("curvaControle");
         if(a){
             //desenhar pontos
             for(i=0; i<todasCurva.length; i++){
+              todasCurvas[i].createcurve(numAvaliacoes);
               for(j=0; j<todasCurva[i].px.length; j++){
                 ctx.strokeStyle = "#000000"; //PRETO
                 ctx.beginPath(); //pra começar uma nova figura geometrica
@@ -91,7 +92,11 @@
             }
         }
         if(c){
-            //desenhar curvas
+          for(i=0; i<todasCurva.length; i++){
+              todasCurvas[i].createcurve(numAvaliacoes);
+              //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
+
+          }
         }
       }
     }
@@ -132,7 +137,7 @@
    </p>
        <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
        <input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
-       <input type="checkbox" name="Curva" checked> Curvas<br><br>
+       <input type="checkbox" name="curvaControle" checked> Curvas<br><br>
        <button onclick="atualizar()">Sicronizar</button>
 </body>
 </html>
