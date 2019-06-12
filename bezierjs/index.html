@@ -1,26 +1,10 @@
 <html>
- <head>
-  <script type="application/javascript">
-    function draw() {
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
+<head>
+<script>
+</script>
+</head>
+<body onload="myFunction()">
 
-        ctx.moveTo(20, 20); //move o eixo
-        ctx.lineTo(100, 100); //cria a linha do eixo até aí
-        ctx.moveTo(50, 50); 
-        ctx.lineTo(150, 100);
-        ctx.strokeStyle = "red";
-        ctx.stroke();
 
-        ctx.beginPath(); //pra começar uma nova figura geometrica
-        ctx.arc(95,50,1,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-        ctx.stroke();
-        }
-    }
-  </script>
- </head>
- <body onload="draw();">
-   <canvas id="canvas" width="1000" height="1000"></canvas>
- </body>
+</body>
 </html>
