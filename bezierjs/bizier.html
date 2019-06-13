@@ -3,6 +3,7 @@
  <head>
   <script type="application/javascript">
   class Curva{
+   
     constructor(){
       //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
       this.px=[];
@@ -26,9 +27,15 @@
       }
     }
   }
-  var todasCurvas = [];//array da classe Curva
+  var todasCurvas =[];//array da classe Curva
   var curvaAtual = 0;//indicador da curva atual
 
+function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
+          ctx.strokeStyle = "#000000"; //PRETO
+          ctx.beginPath(); //pra começar uma nova figura geometrica
+          ctx.arc(x-425,y-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+          ctx.stroke();
+}
     function setPoint() {
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
@@ -37,50 +44,59 @@
           var rectNav = canvas.getBoundingClientRect();
           var x = evt.clientX;
           var y = evt.clientY;
+          drawPoint(ctx,x,y);
           
+/*
           if(todasCurva.length == 0){
-            todasCurva.push(new Curva());
+            var curva = new Curva();
+            todasCurva.push(curva);
           }
-
+          alert(todasCurvas.length);
           todasCurva[curvaAtual].px.push(x);
           todasCurva[curvaAtual].py.push(y);
+  */        
           
 
-          // alert("aqui1");
-          //atualizar();
+         //  alert("aqui1");
+         /// atualizar();
           // alert("aqui2");
 
         }
       }
+    }
+    function resetCanvas(ctx){
+        ctx.fillStyle = "#FFFFFF"; // BRANCO
+        ctx.beginPath(); //pra começar uma nova figura geometrica
+        ctx.fillRect(0, 0, 750, 500);
+        ctx.stroke();
     }
     function atualizar(){
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
 
-        ctx.strokeStyle = "#FFFFFF"; // BRANCO
-        ctx.beginPath(); //pra começar uma nova figura geometrica
-        ctx.fillRect(0, 0, 750, 500);
-        ctx.stroke();
-        
-        
-        
-        var a = CheckBox("pontoControle");
-        var b = CheckBox("poligonoControle");
-        var c = CheckBox("curvaControle");
-        if(a){
+        resetCanvas(ctx);
+    
+        var pontos = CheckBox("pontoControle");
+        var poligono = CheckBox("poligonoControle");
+        var curvas = CheckBox("curvaControle");
+        if(pontos){
             //desenhar pontos
             for(i=0; i<todasCurva.length; i++){
-              todasCurvas[i].createcurve(numAvaliacoes);
-              for(j=0; j<todasCurva[i].px.length; j++){
                 ctx.strokeStyle = "#000000"; //PRETO
-                ctx.beginPath(); //pra começar uma nova figura geometrica
+                //ctx.beginPath(); //pra começar uma nova figura geometrica
+                ctx.arc(todasCurva[i].px[0]-425,todasCurva[i].py[0]-10,3,0,2*Math.PI);
+                ctx.stroke();
+              for(j=1; j<todasCurva[i].px.length; j++){
+                ctx.strokeStyle = "#000000"; //PRETO
+                //ctx.beginPath(); //pra começar uma nova figura geometrica
                 ctx.arc(todasCurva[i].px[j]-425,todasCurva[i].py[j]-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+                ctx.lineTo(todasCurva[i].px[j-1]-425-1,todasCurva[i].py[j-1]-10-1);
                 ctx.stroke();
               }
             }
         }
-        if(b){
+        if(poligonos){
             //desenha retas
             // for(i=0; i<todasCurva.length; i++){
             //   for(j=1; j<todasCurva[i].px.length; j++){
@@ -91,7 +107,7 @@
             //   }
             // }
         }
-        if(c){
+        if(curvas){
           // for(i=0; i<todasCurva.length; i++){
               // todasCurvas[i].createcurve(numAvaliacoes);
               //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
