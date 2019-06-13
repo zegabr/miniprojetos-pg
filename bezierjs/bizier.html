@@ -3,8 +3,6 @@
 <head>
 <script type="application/javascript">
 class Curva{
-
-
   constructor(){
     //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
     this.px=[];
@@ -15,16 +13,28 @@ class Curva{
     this.cy=[];
   }
   bezier(t,arr){
-    
+    //console.log(arr);
+    var n = arr.length;
+    var aux=[];
+    for(var i=0;i<n;i++) aux.push(arr[i]);
+    //console.log(arr);
+    for(var k=1;k<n;k++){
+      for(var i=0;i<=n-k;i++){
+        aux[i] = (1-t)*aux[i] + t*aux[i+1];
+      }
+    }
+    return aux[0];
   }
   createcurve(numerodeavaliacoes){
     this.cx=[];
     this.cy=[];
-    for(var t=0; t<=1;t+=1/numerodeavaliacoes){
+    for(var t=0.0; t<=1.0;t+=1.0/numerodeavaliacoes){
+      //console.log(t);//sempre zero
       this.cx.push(this.bezier(t,this.px));
       this.cy.push(this.bezier(t,this.py));
     }
-    //console.log(this.cx);
+    // console.log(this.cx);
+    // console.log(this.cy);
   }
 }
 var todasCurvas =[];//array da classe Curva
@@ -38,7 +48,7 @@ function setPoint() {
       var rectNav = canvas.getBoundingClientRect();
       var x = evt.clientX;
       var y = evt.clientY;
-      //drawPoint(ctx,x,y);
+      
 
       if(todasCurvas.length > curvaAtual){//garante q curvaAtual é válido
         todasCurvas[curvaAtual].px.push(x);
@@ -61,7 +71,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
 
     resetCanvas(ctx);
 
-    numAvaliacoes = document.getElementById("numeroAvaliacoes").value
+    numAvaliacoes = document.getElementById("numeroAvaliacoes").value;
 
     var pontos = CheckBox("pontoControle");
     var poligonos = CheckBox("poligonoControle");
@@ -69,6 +79,8 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
     if(pontos){
       //desenhar pontos (provavelmente esse if tá pronto)
       for(i=0; i<todasCurvas.length; i++){
+        // console.log(todasCurvas[i].px);
+        // console.log(todasCurvas[i].py);
         for(j=0; j<todasCurvas[i].px.length; j++){
           drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j],i);
         }
@@ -84,15 +96,14 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
         }
       }
     }
-
     if(curvas){
       for(i=0; i<todasCurvas.length; i++){
-        if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
-
-        todasCurvas[i].createcurve(numAvaliacoes);
-        //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
-        for(j=1; j<todasCurvas[i].cx.length; j++){
-          drawReta(todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], ctx);
+        if(todasCurvas[i].px.length>2)todasCurvas[i].createcurve(numAvaliacoes);
+        //console.log(todasCurvas[i].cx);
+        if(todasCurvas[i].cx.length>1){
+          for(j=1; j<todasCurvas[i].cx.length; j++){
+            drawReta(ctx,todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], i);
+          }
         }
       }
     }
@@ -113,7 +124,7 @@ function drawPoint(ctx,x,y, index){//FUNCIONA
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
-  if(index==curvaAtual)ctx.strokeStyle = "#f30707"
+  if(index==curvaAtual)ctx.strokeStyle = "#f30707"; //vermelho
   ctx.beginPath(); //pra começar uma nova figura geometrica
   ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
   ctx.stroke();
@@ -122,7 +133,17 @@ function drawReta(ctx,x,y,x1,y1, index){
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
-  if(index==curvaAtual)ctx.strokeStyle = "#f30707";
+  if(index==curvaAtual)ctx.strokeStyle = "#f30707"; //vermelho
+  ctx.beginPath(); 
+  ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
+  ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+  ctx.stroke();
+}
+function drawCurva(ctx,x,y,x1,y1, index){
+  var canvas = document.getElementById("canvas");
+  var rect = canvas.getBoundingClientRect();
+  if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
+  if(index==curvaAtual)ctx.strokeStyle = "#166802"; //vermelho
   ctx.beginPath(); 
   ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
   ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
