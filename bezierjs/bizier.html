@@ -82,7 +82,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
       //desenhar pontos (provavelmente esse if tá pronto)
       for(i=0; i<todasCurvas.length; i++){
         for(j=0; j<todasCurvas[i].px.length; j++){
-          drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j]);
+          drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j],i);
         }
       }
     }
@@ -90,7 +90,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
       for(i=0; i<todasCurvas.length; i++){
         if(todasCurvas[i].px.length>1){
           for(j=1; j<todasCurvas[i].px.length; j++){
-            drawReta(todasCurvas[i].px[j-1], todasCurvas[i].py[j-1],todasCurvas[i].px[j], todasCurvas[i].py[j], ctx);
+            drawReta(ctx,todasCurvas[i].px[j-1], todasCurvas[i].py[j-1],todasCurvas[i].px[j], todasCurvas[i].py[j], i);
             //alert("aqui")
           }
         }
@@ -121,7 +121,7 @@ function CheckBox(nome){
     return check[0].checked;
   }
 }
-function drawPoint(ctx,x,y){//FUNCIONA 
+function drawPoint(ctx,x,y, index){//FUNCIONA 
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
   ctx.strokeStyle = "#000000"; //PRETO
@@ -129,9 +129,9 @@ function drawPoint(ctx,x,y){//FUNCIONA
   ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
   ctx.stroke();
 }
-function drawReta(x,y,x1,y1,ctx){
+function drawReta(ctx,x,y,x1,y1, index){
   var rect = canvas.getBoundingClientRect();
-  ctx.strokeStyle = "#000000"; //preto
+  ctx.strokeStyle = "#000000"; //PRETO
   ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
   ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
 }
