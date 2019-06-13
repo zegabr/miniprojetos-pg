@@ -29,13 +29,12 @@
   }
   var todasCurvas =[];//array da classe Curva
   var curvaAtual = 0;//indicador da curva atual
-
-function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
-          ctx.strokeStyle = "#000000"; //PRETO
-          ctx.beginPath(); //pra começar uma nova figura geometrica
-          ctx.arc(x-425,y-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
-          ctx.stroke();
-}
+  function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
+              ctx.strokeStyle = "#000000"; //PRETO
+              ctx.beginPath(); //pra começar uma nova figura geometrica
+              ctx.arc(x-425,y-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+              ctx.stroke();
+    }
     function setPoint() {
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
@@ -46,14 +45,16 @@ function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA
           var y = evt.clientY;
           drawPoint(ctx,x,y);
           
+         
 /*
-          if(todasCurva.length == 0){
+//AINDA PRA SER TESTADO
+          if(todasCurvas.length == 0){
             var curva = new Curva();
-            todasCurva.push(curva);
+            todasCurvas.push(curva);
           }
           alert(todasCurvas.length);
-          todasCurva[curvaAtual].px.push(x);
-          todasCurva[curvaAtual].py.push(y);
+          todasCurvas[curvaAtual].px.push(x);
+          todasCurvas[curvaAtual].py.push(y);
   */        
           
 
@@ -64,13 +65,13 @@ function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA
         }
       }
     }
-    function resetCanvas(ctx){
+    function resetCanvas(ctx){//reseta tudo
         ctx.fillStyle = "#FFFFFF"; // BRANCO
         ctx.beginPath(); //pra começar uma nova figura geometrica
         ctx.fillRect(0, 0, 750, 500);
         ctx.stroke();
     }
-    function atualizar(){
+    function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
         var ctx = canvas.getContext("2d");
@@ -81,18 +82,11 @@ function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA
         var poligono = CheckBox("poligonoControle");
         var curvas = CheckBox("curvaControle");
         if(pontos){
-            //desenhar pontos
-            for(i=0; i<todasCurva.length; i++){
-                ctx.strokeStyle = "#000000"; //PRETO
-                //ctx.beginPath(); //pra começar uma nova figura geometrica
-                ctx.arc(todasCurva[i].px[0]-425,todasCurva[i].py[0]-10,3,0,2*Math.PI);
-                ctx.stroke();
-              for(j=1; j<todasCurva[i].px.length; j++){
-                ctx.strokeStyle = "#000000"; //PRETO
-                //ctx.beginPath(); //pra começar uma nova figura geometrica
-                ctx.arc(todasCurva[i].px[j]-425,todasCurva[i].py[j]-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
-                ctx.lineTo(todasCurva[i].px[j-1]-425-1,todasCurva[i].py[j-1]-10-1);
-                ctx.stroke();
+            //desenhar pontos (provavelmente esse if tá pronto)
+            for(i=0; i<todasCurvas.length; i++){
+              for(j=0; j<todasCurvas[i].px.length; j++){
+                drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j]);
+                
               }
             }
         }
@@ -129,32 +123,30 @@ function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA
         return check[0].checked;
       }
     }
+   
     
-    function draw0(){
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-          
+    function novaCurva(){
 
-      }
     }
-    function bezier(t, arr, r, index){
-    if(r == 0){
-      return arr[index];
-    } else {
-      return ((1-t)*bezier(t,arr,r-1,index)) + (t*bezier(t,arr,r-1,index+1))
+    function deletarCurva(){
+
     }
-  } 
+    function ultimaCurva(){
+
+    }
+    function proxCurva(){
+
+    }
   </script>
  </head>
  <body>
   <center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
   <p>
        <button onclick="setPoint()">Inserir Pontos</button>
-       <button onclick="draw0()">Nova Curva</button>
-       <button onclick="draw1()">Deletar Curva</button>
-       <button onclick="draw2()">Curva Anterior</button>
-       <button onclick="draw3()">Proxima Curva</button>
+       <button onclick="novaCurva()">Nova Curva</button>
+       <button onclick="deletarCurva()">Deletar Curva</button>
+       <button onclick="ultimaCurva()">Curva Anterior</button>
+       <button onclick="proxCurva()">Proxima Curva</button>
    </p>
        <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
        <input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
