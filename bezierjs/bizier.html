@@ -4,6 +4,7 @@
   <script type="application/javascript">
   class Curva{
    
+
     constructor(){
       //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
       this.px=[];
@@ -24,10 +25,10 @@
       this.cx=[];
       this.cy=[];
       for(var t=0; t<=1;t+=1/numerodeavaliacoes){
-        this.cx.push(this.bezier(0,px.length,t,px));
-        this.cy.push(this.bezier(0,py.length,t,py));
+        this.cx.push(this.bezier(0,this.px.length,t,this.px));
+        this.cy.push(this.bezier(0,this.py.length,t,this.py));
       }
-      console.log(cx);
+      //console.log(this.px);
     }
   }
   var todasCurvas =[];//array da classe Curva
@@ -57,9 +58,9 @@
             var curva = new Curva();
             todasCurvas.push(curva);
           }
-          //console.log(todasCurvas[0].px.length);
           todasCurvas[curvaAtual].px.push(x);
           todasCurvas[curvaAtual].py.push(y);
+          console.log(todasCurvas);
           
           //atualizar();
           
@@ -102,12 +103,12 @@
           }
         }
         if(curvas){
-          for(i=0; i<todasCurva.length; i++){
+          for(i=0; i<todasCurvas.length; i++){
               if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
               
               todasCurvas[i].createcurve(numAvaliacoes);
               //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
-              for(j=1; j<todasCurva[i].cx.length; j++){
+              for(j=1; j<todasCurvas[i].cx.length; j++){
                 drawReta(todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], ctx);
               }
           }
