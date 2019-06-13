@@ -17,16 +17,17 @@
       if(r == 0){
         return arr[index];
       } else {
-        return ((1-t)*bezier(index,r-1,t,arr)) + (t*bezier(index+1,r-1,t,arr));
+        return ((1-t)*this.bezier(index,r-1,t,arr)) + (t*this.bezier(index+1,r-1,t,arr));
       }
     }
     createcurve(numerodeavaliacoes){
       this.cx=[];
       this.cy=[];
       for(var t=0; t<=1;t+=1/numerodeavaliacoes){
-        this.cx.push(bezier(0,px.length,t,px));
-        this.cy.push(bezier(0,py.length,t,py));
+        this.cx.push(this.bezier(0,px.length,t,px));
+        this.cy.push(this.bezier(0,py.length,t,py));
       }
+      console.log(cx);
     }
   }
   var todasCurvas =[];//array da classe Curva
@@ -60,7 +61,7 @@
           todasCurvas[curvaAtual].px.push(x);
           todasCurvas[curvaAtual].py.push(y);
           
-          atualizar();
+          //atualizar();
           
 
         }
