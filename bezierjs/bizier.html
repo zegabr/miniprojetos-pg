@@ -31,6 +31,7 @@
   }
   var todasCurvas =[];//array da classe Curva
   var curvaAtual = 0;//indicador da curva atual
+  var numAvaliacoes = 100;//PEGAR ISSO DO USER
   function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
     var canvas = document.getElementById("canvas");
     var rect = canvas.getBoundingClientRect();
@@ -100,16 +101,15 @@
           }
         }
         if(curvas){
-          // for(i=0; i<todasCurva.length; i++){
-              // todasCurvas[i].createcurve(numAvaliacoes);
+          for(i=0; i<todasCurva.length; i++){
+              if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
+              
+              todasCurvas[i].createcurve(numAvaliacoes);
               //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
-              // for(j=1; j<todasCurva[i].px.length; j++){
-              //   ctx.strokeStyle = "#000000"; //preto
-              //   ctx.moveTo(todasCurva[i].pointx[ix-1]-425, todasCurva[i].pointy[iy-1]-10); //move o eixo
-              //   ctx.lineTo(pointx[ix]-425-1, pointy[iy]-10-1); //cria a linha do eixo até aí
-              //   ctx.stroke();
-              // }
-          // }
+              for(j=1; j<todasCurva[i].cx.length; j++){
+                drawReta(todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], ctx);
+              }
+          }
         }
       }
     }
