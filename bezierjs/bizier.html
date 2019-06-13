@@ -55,7 +55,7 @@ function setPoint() {
 function resetCanvas(ctx){//reseta tudo
   ctx.fillStyle = "#FFFFFF"; // BRANCO
   ctx.beginPath(); //pra começar uma nova figura geometrica
-  ctx.fillRect(0, 0, 750, 500);
+  ctx.fillRect(0, 0, 900, 450);
   ctx.stroke();
 }
 function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
@@ -78,7 +78,8 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
               var y = Math.abs((todasCurvas[curvaAtual].py[i] - rect.top) - evt.clientY);
               console.log("x "+x);
               console.log("y "+y);
-            if( x <= 15 && y <= 180){
+              console.log("i "+i);
+            if( x <= 20 && y <= 185){
               console.log("ObjetoAtual antes"+objAtual);
               objAtual = i;
               console.log("ObjAtual depois" + objAtual);
