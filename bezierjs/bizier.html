@@ -59,10 +59,8 @@
           todasCurvas[curvaAtual].px.push(x);
           todasCurvas[curvaAtual].py.push(y);
           
-
-         //  alert("aqui1");
           atualizar();
-          // alert("aqui2");
+          
 
         }
       }
@@ -92,15 +90,14 @@
             }
         }
         if(poligonos){
-            //desenha retas
-            // for(i=0; i<todasCurva.length; i++){
-            //   for(j=1; j<todasCurva[i].px.length; j++){
-            //     ctx.strokeStyle = "#000000"; //preto
-            //     ctx.moveTo(todasCurva[i].pointx[ix-1]-425, todasCurva[i].pointy[iy-1]-10); //move o eixo
-            //     ctx.lineTo(pointx[ix]-425-1, pointy[iy]-10-1); //cria a linha do eixo até aí
-            //     ctx.stroke();
-            //   }
-            // }
+          for(i=0; i<todasCurvas.length; i++){
+            if(todasCurvas[i].px.length>1){
+              for(j=1; j<todasCurvas[i].px.length; j++){
+                drawReta(todasCurvas[i].px[j-1], todasCurvas[i].py[j-1],todasCurvas[i].px[j], todasCurvas[i].py[j], ctx);
+                //alert("aqui")
+              }
+            }
+          }
         }
         if(curvas){
           // for(i=0; i<todasCurva.length; i++){
@@ -124,7 +121,13 @@
         return check[0].checked;
       }
     }
-   
+    function drawReta(x,y,x1,y1,ctx){
+      var rect = canvas.getBoundingClientRect();
+      ctx.strokeStyle = "#000000"; //preto
+      ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
+      ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+      ctx.stroke();
+    }
     
     function novaCurva(){
 
