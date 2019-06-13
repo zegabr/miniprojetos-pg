@@ -13,11 +13,9 @@ class Curva{
     this.cy=[];
   }
   bezier(t,arr){
-    //console.log(arr);
     var n = arr.length;
     var aux=[];
     for(var i=0;i<n;i++) aux.push(arr[i]);
-    //console.log(arr);
     for(var k=1;k<n;k++){
       for(var i=0;i<=n-k;i++){
         aux[i] = (1-t)*aux[i] + t*aux[i+1];
@@ -29,12 +27,9 @@ class Curva{
     this.cx=[];
     this.cy=[];
     for(var t=0.0; t<=1.0;t+=1.0/numerodeavaliacoes){
-      //console.log(t);//sempre zero
       this.cx.push(this.bezier(t,this.px));
       this.cy.push(this.bezier(t,this.py));
     }
-    // console.log(this.cx);
-    // console.log(this.cy);
   }
 }
 var todasCurvas =[];//array da classe Curva
@@ -102,7 +97,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
         //console.log(todasCurvas[i].cx);
         if(todasCurvas[i].cx.length>1){
           for(j=1; j<todasCurvas[i].cx.length; j++){
-            drawReta(ctx,todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], i);
+            drawCurva(ctx,todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], i);
           }
         }
       }
@@ -143,7 +138,7 @@ function drawCurva(ctx,x,y,x1,y1, index){
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
-  if(index==curvaAtual)ctx.strokeStyle = "#166802"; //vermelho
+  if(index==curvaAtual)ctx.strokeStyle = "#166802"; //verde
   ctx.beginPath(); 
   ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
   ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
