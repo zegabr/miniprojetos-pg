@@ -30,6 +30,8 @@ class Curva{
 var todasCurvas =[];//array da classe Curva
 var curvaAtual = 0;//indicador da curva atual
 var numAvaliacoes = 10;//PEGAR ISSO DO USER
+var objAtual = -1; //variavel pra mexer o ponto
+
 function setPoint() {
   var canvas = document.getElementById("canvas");
   if (canvas.getContext) {
@@ -58,11 +60,52 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
   var canvas = document.getElementById("canvas");
   if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
-
     resetCanvas(ctx);
-
     numAvaliacoes = document.getElementById("numeroAvaliacoes").value
 
+    //tornando o ponto clicavel
+    canvas.onmousedown = function(evt){
+      var rect = canvas.getBoundingClientRect();
+      objAtual = -1;
+      for(i=0;i<todasCurvas[curvaAtual].px.length;i++){
+          console.log("mouseX"+evt.clientX);
+          console.log("mouseY"+evt.clientY);
+
+          console.log("pontoX"+(todasCurvas[curvaAtual].px[i] - rect.left));
+          console.log("pontoY"+(todasCurvas[curvaAtual].py[i] - rect.top));
+
+          var x = Math.abs((todasCurvas[curvaAtual].px[i] - rect.left) - evt.clientX);
+          var y = Math.abs((todasCurvas[curvaAtual].py[i] - rect.top) - evt.clientY);
+
+          console.log("x "+x);
+          console.log("y "+y);
+
+        if( x <= 15 && y <= 180){
+          console.log("ObjetoAtual antes"+objAtual);
+          objAtual = i;
+          console.log("ObjAtual depois" + objAtual);
+          break;
+        }
+      }
+    }
+
+    canvas.onmouseup = function(evt){
+      if(objAtual != -1){
+        todasCurvas[curvaAtual].px[objAtual] = evt.clientX;
+        todasCurvas[curvaAtual].py[objAtual] = evt.clientY;
+      }
+    }
+
+    /* canvas.onmousemove = function(evt){
+        console.log("trocando o ponto");
+        console.log(evt.clientX);
+        console.log(evt.clientY);
+      if(objAtual != -1){
+        todasCurvas[curvaAtual].px[objAtual] = evt.clientX;
+        todasCurvas[curvaAtual].py[objAtual] = evt.clientY;
+      }
+    }
+    */
     var pontos = CheckBox("pontoControle");
     var poligonos = CheckBox("poligonoControle");
     var curvas = CheckBox("curvaControle");
@@ -147,21 +190,21 @@ function proxCurva(){
 </script>
 </head>
 <body onclick="atualizar()">
-
-<center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
 <p>
 Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvaliacoes">
-</p>
-<p>
 <button onclick="setPoint()">Inserir Pontos</button>
 <button onclick="novaCurva()">Nova Curva</button>
 <button onclick="deletarCurva()">Deletar Curva</button>
 <button onclick="ultimaCurva()">Curva Anterior</button>
 <button onclick="proxCurva()">Proxima Curva</button>
+<button onclick="atualizar()">Sicronizar</button>
 </p>
+<p>
 <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
 <input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
 <input type="checkbox" name="curvaControle" checked> Curvas<br><br>
-<button onclick="atualizar()">Sicronizar</button>
+</p>
+
+<center><canvas id="canvas" width="900" height="450" style = "border: 3px solid#000000;"></canvas></center>
 </body>
 </html>
