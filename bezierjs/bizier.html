@@ -44,18 +44,11 @@ function setPoint() {
       var y = evt.clientY;
       //drawPoint(ctx,x,y);
 
-
-
-      if(todasCurvas.length > curvaAtual){
-
+      if(todasCurvas.length > curvaAtual){//garante q curvaAtual é válido
         todasCurvas[curvaAtual].px.push(x);
         todasCurvas[curvaAtual].py.push(y);
         // console.log(todasCurvas);
       }
-
-      //atualizar();
-
-
     }
   }
 }
@@ -74,8 +67,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
 
     numAvaliacoes = document.getElementById("numeroAvaliacoes").value
 
-
-      var pontos = CheckBox("pontoControle");
+    var pontos = CheckBox("pontoControle");
     var poligonos = CheckBox("poligonoControle");
     var curvas = CheckBox("curvaControle");
     if(pontos){
@@ -124,16 +116,20 @@ function CheckBox(nome){
 function drawPoint(ctx,x,y, index){//FUNCIONA 
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
-  ctx.strokeStyle = "#000000"; //PRETO
+  if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
+  if(index==curvaAtual)ctx.strokeStyle = "#f30707"
   ctx.beginPath(); //pra começar uma nova figura geometrica
   ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
   ctx.stroke();
 }
 function drawReta(ctx,x,y,x1,y1, index){
+  var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
-  ctx.strokeStyle = "#000000"; //PRETO
+  if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
+  if(index==curvaAtual)ctx.strokeStyle = "#f30707"
   ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
   ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+  //ctx.stroke();
 }
 
 function novaCurva(){
