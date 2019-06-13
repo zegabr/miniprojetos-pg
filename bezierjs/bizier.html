@@ -14,19 +14,15 @@ class Curva{
     this.cx=[];
     this.cy=[];
   }
-  bezier(index,r,t,arr){
-    if(r == 0){
-      return arr[index];
-    } else {
-      return ((1-t)*this.bezier(index,r-1,t,arr)) + (t*this.bezier(index+1,r-1,t,arr));
-    }
+  bezier(t,arr){
+    
   }
   createcurve(numerodeavaliacoes){
     this.cx=[];
     this.cy=[];
     for(var t=0; t<=1;t+=1/numerodeavaliacoes){
-      this.cx.push(this.bezier(0,this.px.length,t,this.px));
-      this.cy.push(this.bezier(0,this.py.length,t,this.py));
+      this.cx.push(this.bezier(t,this.px));
+      this.cy.push(this.bezier(t,this.py));
     }
     //console.log(this.cx);
   }
@@ -126,10 +122,11 @@ function drawReta(ctx,x,y,x1,y1, index){
   var canvas = document.getElementById("canvas");
   var rect = canvas.getBoundingClientRect();
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
-  if(index==curvaAtual)ctx.strokeStyle = "#f30707"
+  if(index==curvaAtual)ctx.strokeStyle = "#f30707";
+  ctx.beginPath(); 
   ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
   ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
-  //ctx.stroke();
+  ctx.stroke();
 }
 
 function novaCurva(){
