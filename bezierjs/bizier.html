@@ -45,23 +45,21 @@
           var rectNav = canvas.getBoundingClientRect();
           var x = evt.clientX;
           var y = evt.clientY;
-          drawPoint(ctx,x,y);
+          //drawPoint(ctx,x,y);
           
          
-/*
-//AINDA PRA SER TESTADO
+
           if(todasCurvas.length == 0){
             var curva = new Curva();
             todasCurvas.push(curva);
           }
-          alert(todasCurvas.length);
+          //console.log(todasCurvas[0].px.length);
           todasCurvas[curvaAtual].px.push(x);
           todasCurvas[curvaAtual].py.push(y);
-  */        
           
 
          //  alert("aqui1");
-         /// atualizar();
+          atualizar();
           // alert("aqui2");
 
         }
@@ -81,14 +79,13 @@
         resetCanvas(ctx);
     
         var pontos = CheckBox("pontoControle");
-        var poligono = CheckBox("poligonoControle");
+        var poligonos = CheckBox("poligonoControle");
         var curvas = CheckBox("curvaControle");
         if(pontos){
             //desenhar pontos (provavelmente esse if tá pronto)
             for(i=0; i<todasCurvas.length; i++){
               for(j=0; j<todasCurvas[i].px.length; j++){
                 drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j]);
-                
               }
             }
         }
