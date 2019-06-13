@@ -28,20 +28,12 @@
         this.cx.push(this.bezier(0,this.px.length,t,this.px));
         this.cy.push(this.bezier(0,this.py.length,t,this.py));
       }
-      console.log(this.cx);
+      //console.log(this.cx);
     }
   }
   var todasCurvas =[];//array da classe Curva
   var curvaAtual = 0;//indicador da curva atual
-  var numAvaliacoes = 100;//PEGAR ISSO DO USER
-  function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
-    var canvas = document.getElementById("canvas");
-    var rect = canvas.getBoundingClientRect();
-              ctx.strokeStyle = "#000000"; //PRETO
-              ctx.beginPath(); //pra começar uma nova figura geometrica
-              ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
-              ctx.stroke();
-    }
+  var numAvaliacoes = 10;//PEGAR ISSO DO USER
     function setPoint() {
       var canvas = document.getElementById("canvas");
       if (canvas.getContext) {
@@ -54,13 +46,12 @@
           
          
 
-          if(todasCurvas.length == 0){
-            var curva = new Curva();
-            todasCurvas.push(curva);
+          if(todasCurvas.length > curvaAtual){
+
+            todasCurvas[curvaAtual].px.push(x);
+            todasCurvas[curvaAtual].py.push(y);
+          // console.log(todasCurvas);
           }
-          todasCurvas[curvaAtual].px.push(x);
-          todasCurvas[curvaAtual].py.push(y);
-          console.log(todasCurvas);
           
           //atualizar();
           
@@ -81,7 +72,7 @@
 
         resetCanvas(ctx);
         
-        curvaAtual = document.getElementById("curvaSelecionada").value
+        numAvaliacoes = document.getElementById("numeroAvaliacoes").value
   
         
         var pontos = CheckBox("pontoControle");
@@ -118,6 +109,8 @@
           }
         }
 
+        ctx.stroke();
+
       }
     }
     function CheckBox(nome){
@@ -128,25 +121,36 @@
         return check[0].checked;
       }
     }
+  function drawPoint(ctx,x,y){//FUNCIONA 
+    var canvas = document.getElementById("canvas");
+    var rect = canvas.getBoundingClientRect();
+    ctx.strokeStyle = "#000000"; //PRETO
+    ctx.beginPath(); //pra começar uma nova figura geometrica
+    ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+    ctx.stroke();
+  }
     function drawReta(x,y,x1,y1,ctx){
       var rect = canvas.getBoundingClientRect();
       ctx.strokeStyle = "#000000"; //preto
       ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
       ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
-      ctx.stroke();
+      //ctx.stroke();
     }
     
     function novaCurva(){
-
+      todasCurvas.push(new Curva());
+      curvaAtual = todasCurvas.length -1;
     }
     function deletarCurva(){
-
+      //deletar todasCurvas[curvaAtual]
+      //fazer curvaAtual = (curvaAtual+1)%todasCurvas.length;
     }
     function ultimaCurva(){
-
+      curvaAtual --;
+      if(curvaAtual<0)curvaAtual+=todasCurvas.length;
     }
     function proxCurva(){
-
+      curvaAtual = (curvaAtual+1)%todasCurvas.length;
     }
   </script>
  </head>
@@ -154,7 +158,7 @@
   
   <center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
   <p>
-      Qual curva deseja selecionar?  <input type="text" id="curvaSelecionada">
+      Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvaliacoes">
   </p>
   <p>
        <button onclick="setPoint()">Inserir Pontos</button>
