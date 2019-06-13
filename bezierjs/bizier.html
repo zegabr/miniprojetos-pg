@@ -30,9 +30,11 @@
   var todasCurvas =[];//array da classe Curva
   var curvaAtual = 0;//indicador da curva atual
   function drawPoint(ctx,x,y){//ESSA PORRA FUNCIONA 
+    var canvas = document.getElementById("canvas");
+    var rect = canvas.getBoundingClientRect();
               ctx.strokeStyle = "#000000"; //PRETO
               ctx.beginPath(); //pra começar uma nova figura geometrica
-              ctx.arc(x-425,y-10,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+              ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
               ctx.stroke();
     }
     function setPoint() {
