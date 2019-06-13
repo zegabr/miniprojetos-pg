@@ -173,8 +173,11 @@ function novaCurva(){
   curvaAtual = todasCurvas.length -1;
 }
 function deletarCurva(){
-  //deletar todasCurvas[curvaAtual]
-  //fazer curvaAtual = (curvaAtual+1)%todasCurvas.length;
+  for(i=curvaAtual;i<todasCurvas.length;i++){
+    todasCurvas[i] = todasCurvas[i+1];
+  }
+  todasCurvas.pop();
+  console.log(todasCurvas);
 }
 function ultimaCurva(){
   curvaAtual --;
