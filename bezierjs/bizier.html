@@ -21,6 +21,8 @@
       }
     }
     createcurve(numerodeavaliacoes){
+      this.cx=[];
+      this.cy=[];
       for(var t=0; t<=1;t+=1/numerodeavaliacoes){
         this.cx.push(bezier(0,px.length,t,px));
         this.cy.push(bezier(0,py.length,t,py));
