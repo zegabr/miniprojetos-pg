@@ -1,175 +1,174 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <script type="application/javascript">
-  class Curva{
-   
+<head>
+<script type="application/javascript">
+class Curva{
 
-    constructor(){
-      //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
-      this.px=[];
-      this.py=[];
 
-      //pontos da curva (curva são retas geradas entre esses pontos)
-      this.cx=[];
-      this.cy=[];
-    }
-    bezier(index,r,t,arr){
-      if(r == 0){
-        return arr[index];
-      } else {
-        return ((1-t)*this.bezier(index,r-1,t,arr)) + (t*this.bezier(index+1,r-1,t,arr));
-      }
-    }
-    createcurve(numerodeavaliacoes){
-      this.cx=[];
-      this.cy=[];
-      for(var t=0; t<=1;t+=1/numerodeavaliacoes){
-        this.cx.push(this.bezier(0,this.px.length,t,this.px));
-        this.cy.push(this.bezier(0,this.py.length,t,this.py));
-      }
-      //console.log(this.cx);
+  constructor(){
+    //pontos de controle (poligono de controle são as retas entre pontos consecutivos)
+    this.px=[];
+    this.py=[];
+
+    //pontos da curva (curva são retas geradas entre esses pontos)
+    this.cx=[];
+    this.cy=[];
+  }
+  bezier(index,r,t,arr){
+    if(r == 0){
+      return arr[index];
+    } else {
+      return ((1-t)*this.bezier(index,r-1,t,arr)) + (t*this.bezier(index+1,r-1,t,arr));
     }
   }
-  var todasCurvas =[];//array da classe Curva
-  var curvaAtual = 0;//indicador da curva atual
-  var numAvaliacoes = 10;//PEGAR ISSO DO USER
-    function setPoint() {
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-        canvas.onclick = function(evt){
-          var rectNav = canvas.getBoundingClientRect();
-          var x = evt.clientX;
-          var y = evt.clientY;
-          //drawPoint(ctx,x,y);
-          
-         
+  createcurve(numerodeavaliacoes){
+    this.cx=[];
+    this.cy=[];
+    for(var t=0; t<=1;t+=1/numerodeavaliacoes){
+      this.cx.push(this.bezier(0,this.px.length,t,this.px));
+      this.cy.push(this.bezier(0,this.py.length,t,this.py));
+    }
+    //console.log(this.cx);
+  }
+}
+var todasCurvas =[];//array da classe Curva
+var curvaAtual = 0;//indicador da curva atual
+var numAvaliacoes = 10;//PEGAR ISSO DO USER
+function setPoint() {
+  var canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+    canvas.onclick = function(evt){
+      var rectNav = canvas.getBoundingClientRect();
+      var x = evt.clientX;
+      var y = evt.clientY;
+      //drawPoint(ctx,x,y);
 
-          if(todasCurvas.length > curvaAtual){
 
-            todasCurvas[curvaAtual].px.push(x);
-            todasCurvas[curvaAtual].py.push(y);
-          // console.log(todasCurvas);
-          }
-          
-          //atualizar();
-          
 
+      if(todasCurvas.length > curvaAtual){
+
+        todasCurvas[curvaAtual].px.push(x);
+        todasCurvas[curvaAtual].py.push(y);
+        // console.log(todasCurvas);
+      }
+
+      //atualizar();
+
+
+    }
+  }
+}
+function resetCanvas(ctx){//reseta tudo
+  ctx.fillStyle = "#FFFFFF"; // BRANCO
+  ctx.beginPath(); //pra começar uma nova figura geometrica
+  ctx.fillRect(0, 0, 750, 500);
+  ctx.stroke();
+}
+function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
+  var canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+
+    resetCanvas(ctx);
+
+    numAvaliacoes = document.getElementById("numeroAvaliacoes").value
+
+
+      var pontos = CheckBox("pontoControle");
+    var poligonos = CheckBox("poligonoControle");
+    var curvas = CheckBox("curvaControle");
+    if(pontos){
+      //desenhar pontos (provavelmente esse if tá pronto)
+      for(i=0; i<todasCurvas.length; i++){
+        for(j=0; j<todasCurvas[i].px.length; j++){
+          drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j]);
         }
       }
     }
-    function resetCanvas(ctx){//reseta tudo
-        ctx.fillStyle = "#FFFFFF"; // BRANCO
-        ctx.beginPath(); //pra começar uma nova figura geometrica
-        ctx.fillRect(0, 0, 750, 500);
-        ctx.stroke();
-    }
-    function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-
-        resetCanvas(ctx);
-        
-        numAvaliacoes = document.getElementById("numeroAvaliacoes").value
-  
-        
-        var pontos = CheckBox("pontoControle");
-        var poligonos = CheckBox("poligonoControle");
-        var curvas = CheckBox("curvaControle");
-        if(pontos){
-            //desenhar pontos (provavelmente esse if tá pronto)
-            for(i=0; i<todasCurvas.length; i++){
-              for(j=0; j<todasCurvas[i].px.length; j++){
-                drawPoint(ctx,todasCurvas[i].px[j],todasCurvas[i].py[j]);
-              }
-            }
-        }
-        if(poligonos){
-          for(i=0; i<todasCurvas.length; i++){
-            if(todasCurvas[i].px.length>1){
-              for(j=1; j<todasCurvas[i].px.length; j++){
-                drawReta(todasCurvas[i].px[j-1], todasCurvas[i].py[j-1],todasCurvas[i].px[j], todasCurvas[i].py[j], ctx);
-                //alert("aqui")
-              }
-            }
+    if(poligonos){
+      for(i=0; i<todasCurvas.length; i++){
+        if(todasCurvas[i].px.length>1){
+          for(j=1; j<todasCurvas[i].px.length; j++){
+            drawReta(todasCurvas[i].px[j-1], todasCurvas[i].py[j-1],todasCurvas[i].px[j], todasCurvas[i].py[j], ctx);
+            //alert("aqui")
           }
         }
-        
-        if(curvas){
-          for(i=0; i<todasCurvas.length; i++){
-              if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
-              
-              todasCurvas[i].createcurve(numAvaliacoes);
-              //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
-              for(j=1; j<todasCurvas[i].cx.length; j++){
-                drawReta(todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], ctx);
-              }
-          }
+      }
+    }
+
+    if(curvas){
+      for(i=0; i<todasCurvas.length; i++){
+        if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
+
+        todasCurvas[i].createcurve(numAvaliacoes);
+        //desenhar curvas (retas entre pontos consecutivos cx e cy da curvaatual)
+        for(j=1; j<todasCurvas[i].cx.length; j++){
+          drawReta(todasCurvas[i].cx[j-1], todasCurvas[i].cy[j-1],todasCurvas[i].cx[j], todasCurvas[i].cy[j], ctx);
         }
-
-        ctx.stroke();
-
       }
     }
-    function CheckBox(nome){
-      var canvas = document.getElementById("canvas");
-      if (canvas.getContext) {
-        var ctx = canvas.getContext("2d");
-        var check = document.getElementsByName(nome); 
-        return check[0].checked;
-      }
-    }
-  function drawPoint(ctx,x,y){//FUNCIONA 
-    var canvas = document.getElementById("canvas");
-    var rect = canvas.getBoundingClientRect();
-    ctx.strokeStyle = "#000000"; //PRETO
-    ctx.beginPath(); //pra começar uma nova figura geometrica
-    ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+
     ctx.stroke();
+
   }
-    function drawReta(x,y,x1,y1,ctx){
-      var rect = canvas.getBoundingClientRect();
-      ctx.strokeStyle = "#000000"; //preto
-      ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
-      ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
-      //ctx.stroke();
-    }
-    
-    function novaCurva(){
-      todasCurvas.push(new Curva());
-      curvaAtual = todasCurvas.length -1;
-    }
-    function deletarCurva(){
-      //deletar todasCurvas[curvaAtual]
-      //fazer curvaAtual = (curvaAtual+1)%todasCurvas.length;
-    }
-    function ultimaCurva(){
-      curvaAtual --;
-      if(curvaAtual<0)curvaAtual+=todasCurvas.length;
-    }
-    function proxCurva(){
-      curvaAtual = (curvaAtual+1)%todasCurvas.length;
-    }
-  </script>
- </head>
- <body onclick="atualizar()">
-  
-  <center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
-  <p>
-      Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvaliacoes">
-  </p>
-  <p>
-       <button onclick="setPoint()">Inserir Pontos</button>
-       <button onclick="novaCurva()">Nova Curva</button>
-       <button onclick="deletarCurva()">Deletar Curva</button>
-       <button onclick="ultimaCurva()">Curva Anterior</button>
-       <button onclick="proxCurva()">Proxima Curva</button>
-   </p>
-       <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
-       <input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
-       <input type="checkbox" name="curvaControle" checked> Curvas<br><br>
-       <button onclick="atualizar()">Sicronizar</button>
+}
+function CheckBox(nome){
+  var canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+    var check = document.getElementsByName(nome); 
+    return check[0].checked;
+  }
+}
+function drawPoint(ctx,x,y){//FUNCIONA 
+  var canvas = document.getElementById("canvas");
+  var rect = canvas.getBoundingClientRect();
+  ctx.strokeStyle = "#000000"; //PRETO
+  ctx.beginPath(); //pra começar uma nova figura geometrica
+  ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+  ctx.stroke();
+}
+function drawReta(x,y,x1,y1,ctx){
+  var rect = canvas.getBoundingClientRect();
+  ctx.strokeStyle = "#000000"; //preto
+  ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
+  ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+}
+
+function novaCurva(){
+  todasCurvas.push(new Curva());
+  curvaAtual = todasCurvas.length -1;
+}
+function deletarCurva(){
+  //deletar todasCurvas[curvaAtual]
+  //fazer curvaAtual = (curvaAtual+1)%todasCurvas.length;
+}
+function ultimaCurva(){
+  curvaAtual --;
+  if(curvaAtual<0)curvaAtual+=todasCurvas.length;
+}
+function proxCurva(){
+  curvaAtual = (curvaAtual+1)%todasCurvas.length;
+}
+</script>
+</head>
+<body onclick="atualizar()">
+
+<center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
+<p>
+Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvaliacoes">
+</p>
+<p>
+<button onclick="setPoint()">Inserir Pontos</button>
+<button onclick="novaCurva()">Nova Curva</button>
+<button onclick="deletarCurva()">Deletar Curva</button>
+<button onclick="ultimaCurva()">Curva Anterior</button>
+<button onclick="proxCurva()">Proxima Curva</button>
+</p>
+<input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
+<input type="checkbox" name="poligonoControle" checked> Poligonais de Controle<br>
+<input type="checkbox" name="curvaControle" checked> Curvas<br><br>
+<button onclick="atualizar()">Sicronizar</button>
 </body>
 </html>
