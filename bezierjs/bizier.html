@@ -79,7 +79,10 @@
         var ctx = canvas.getContext("2d");
 
         resetCanvas(ctx);
-    
+        
+        curvaAtual = document.getElementById("curvaSelecionada").value
+  
+        
         var pontos = CheckBox("pontoControle");
         var poligonos = CheckBox("poligonoControle");
         var curvas = CheckBox("curvaControle");
@@ -101,6 +104,7 @@
             }
           }
         }
+        
         if(curvas){
           for(i=0; i<todasCurva.length; i++){
               if(todasCurvas[i].px.length < 3) continue;//só tem curva se tiver 3 ou mais pontos
@@ -112,6 +116,7 @@
               }
           }
         }
+
       }
     }
     function CheckBox(nome){
@@ -145,7 +150,11 @@
   </script>
  </head>
  <body onclick="atualizar()">
+  
   <center><canvas id="canvas" width="750" height="500" style = "border: 3px solid#000000;"></canvas></center>
+  <p>
+      Qual curva deseja selecionar?  <input type="text" id="curvaSelecionada">
+  </p>
   <p>
        <button onclick="setPoint()">Inserir Pontos</button>
        <button onclick="novaCurva()">Nova Curva</button>
