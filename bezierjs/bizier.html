@@ -35,12 +35,13 @@ var todasCurvas =[];//array da classe Curva
 var curvaAtual = 0;//indicador da curva atual
 var numAvaliacoes = 10;//PEGAR ISSO DO USER
 var objAtual = -1;
-var proximidade = 100;
+//var proximidade = 100;
 var arrasta=false;
 var setp=false;
+var adicionar=false;
 
 function setPoint() {
-  if(arrasta) return;
+  adicionar = true;
   var canvas = document.getElementById("canvas");
   if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
@@ -48,12 +49,13 @@ function setPoint() {
       var rectNav = canvas.getBoundingClientRect();
       var x = evt.clientX-rectNav.left;
       var y = evt.clientY-rectNav.top;
-
-      if(todasCurvas.length > curvaAtual){//garante q curvaAtual é válido
+      console.log(adicionar);
+      if(todasCurvas.length > curvaAtual && adicionar){//garante q curvaAtual é válido
         todasCurvas[curvaAtual].px.push(x);
         todasCurvas[curvaAtual].py.push(y);
         // console.log(todasCurvas);
       }
+      adicionar = false;
     }
   }
   //atualizar();
@@ -61,8 +63,8 @@ function setPoint() {
 
 function arrastarPonto(){
   //tornando o ponto clicavel
-  arrasta=true;
   var canvas = document.getElementById("canvas");
+  arrasta=true;
   if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
     canvas.onmousedown = function(evt){
@@ -80,10 +82,10 @@ function arrastarPonto(){
         // console.log("x "+x);
         // console.log("y "+y);
         // console.log("i "+i);
-        if( deltax <= proximidade && deltay <= proximidade){
-          //console.log("ObjetoAtual antes"+objAtual);
+        if( deltax <= 25 && deltay <= 185){
+          console.log("ObjetoAtual antes"+objAtual);
           objAtual = i;
-          //console.log("ObjAtual depois" + objAtual);
+          console.log("ObjAtual depois" + objAtual);
           break;
         }
       }
@@ -91,14 +93,14 @@ function arrastarPonto(){
     canvas.onmouseup = function(evt){
       var mx = evt.clientX;
       var my = evt.clientY;
-      if(objAtual != -1){
+      if(objAtual != -1 && arrasta){
         todasCurvas[curvaAtual].px[objAtual] = mx;
         todasCurvas[curvaAtual].py[objAtual] = my;
         //atualizar();
+        arrasta=false;
       }
     }
   }
-  arrasta=false;
 }
 function resetCanvas(ctx){//reseta tudo
   ctx.fillStyle = "#FFFFFF"; // BRANCO
@@ -199,6 +201,16 @@ function deletarCurva(){
   console.log(todasCurvas);
   // atualizar();
 }
+function removerPonto(){
+  for(i=objAtual;i<todasCurvas[curvaAtual].px.length;i++){
+    todasCurvas[curvaAtual].px[i] = todasCurvas[curvaAtual].px[i+1];
+    todasCurvas[curvaAtual].py[i] = todasCurvas[curvaAtual].py[i+1];
+  }
+  todasCurvas[curvaAtual].px.pop();
+  todasCurvas[curvaAtual].py.pop();
+  console.log(todasCurvas[curvaAtual]);
+  // atualizar();
+}
 function ultimaCurva(){
   curvaAtual --;
   if(curvaAtual<0)curvaAtual+=todasCurvas.length;
@@ -218,7 +230,8 @@ Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvalia
 <button onclick="deletarCurva()">Deletar Curva</button>
 <button onclick="ultimaCurva()">Curva Anterior</button>
 <button onclick="proxCurva()">Proxima Curva</button>
-<button onclick="arrastarPonto()">Arrastar</button>
+<button onclick="arrastarPonto()">Arrastar ou Selecionar Ponto</button>
+<button onclick="removerPonto()">Remover Ponto</button>
 <button onclick="atualizar()">Sicronizar</button>
 </p>
 <p>
