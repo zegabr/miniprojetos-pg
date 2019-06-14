@@ -188,13 +188,14 @@ function drawCurva(ctx,x,y,x1,y1, index){
 function novaCurva(){
   todasCurvas.push(new Curva());
   curvaAtual = todasCurvas.length -1;
+  alert("nova curva criada\nquantidade de curvas ="+todasCurvas.length);
 }
 function deletarCurva(){
   for(i=curvaAtual;i<todasCurvas.length;i++){
     todasCurvas[i] = todasCurvas[i+1];
   }
   todasCurvas.pop();
-  console.log(todasCurvas);
+  alert("curva deletada\nquantidade de curvas ="+todasCurvas.length);
 }
 function removerPonto(){
   for(i=objAtual;i<todasCurvas[curvaAtual].px.length;i++){
