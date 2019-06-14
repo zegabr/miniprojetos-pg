@@ -35,15 +35,20 @@ var todasCurvas =[];//array da classe Curva
 var curvaAtual = 0;//indicador da curva atual
 var numAvaliacoes = 10;//PEGAR ISSO DO USER
 var objAtual = -1;
+var proximidade = 100;
+var arrasta=false;
+var setp=false;
+
 function setPoint() {
+  if(arrasta) return;
   var canvas = document.getElementById("canvas");
   if (canvas.getContext) {
     var ctx = canvas.getContext("2d");
     canvas.onclick = function(evt){
       var rectNav = canvas.getBoundingClientRect();
-      var x = evt.clientX;
-      var y = evt.clientY;
-      
+      var x = evt.clientX-rectNav.left;
+      var y = evt.clientY-rectNav.top;
+
       if(todasCurvas.length > curvaAtual){//garante q curvaAtual é válido
         todasCurvas[curvaAtual].px.push(x);
         todasCurvas[curvaAtual].py.push(y);
@@ -51,6 +56,44 @@ function setPoint() {
       }
     }
   }
+}
+
+function arrastarPonto(){
+  //tornando o ponto clicavel
+  arrasta=true;
+  var canvas = document.getElementById("canvas");
+  if (canvas.getContext) {
+    var ctx = canvas.getContext("2d");
+    canvas.onmousedown = function(evt){
+      var rect = canvas.getBoundingClientRect();
+      objAtual = -1;
+      for(i=0;i<todasCurvas[curvaAtual].px.length;i++){
+        console.log("mouseX"+evt.clientX);
+        console.log("mouseY"+evt.clientY);
+        console.log("pontoX"+(todasCurvas[curvaAtual].px[i] ));
+        console.log("pontoY"+(todasCurvas[curvaAtual].py[i] ));
+        var x = Math.abs((todasCurvas[curvaAtual].px[i] ) - evt.clientX);
+        var y = Math.abs((todasCurvas[curvaAtual].py[i] ) - evt.clientY);
+        console.log("x "+x);
+        console.log("y "+y);
+        console.log("i "+i);
+        if( x <= proximidade && y <= proximidade){
+          console.log("ObjetoAtual antes"+objAtual);
+          objAtual = i;
+          console.log("ObjAtual depois" + objAtual);
+          break;
+        }
+      }
+    }
+    canvas.onmouseup = function(evt){
+      if(objAtual != -1){
+        todasCurvas[curvaAtual].px[objAtual] = evt.clientX;
+        todasCurvas[curvaAtual].py[objAtual] = evt.clientY;
+        ;
+      }
+    }
+  }
+  arrasta=false;
 }
 function resetCanvas(ctx){//reseta tudo
   ctx.fillStyle = "#FFFFFF"; // BRANCO
@@ -64,35 +107,6 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
     var ctx = canvas.getContext("2d");
     resetCanvas(ctx);
     numAvaliacoes = document.getElementById("numeroAvaliacoes").value;
-
-    //tornando o ponto clicavel
-    canvas.onmousedown = function(evt){
-          var rect = canvas.getBoundingClientRect();
-          objAtual = -1;
-          for(i=0;i<todasCurvas[curvaAtual].px.length;i++){
-              console.log("mouseX"+evt.clientX);
-              console.log("mouseY"+evt.clientY);
-              console.log("pontoX"+(todasCurvas[curvaAtual].px[i] - rect.left));
-              console.log("pontoY"+(todasCurvas[curvaAtual].py[i] - rect.top));
-              var x = Math.abs((todasCurvas[curvaAtual].px[i] - rect.left) - evt.clientX);
-              var y = Math.abs((todasCurvas[curvaAtual].py[i] - rect.top) - evt.clientY);
-              console.log("x "+x);
-              console.log("y "+y);
-              console.log("i "+i);
-            if( x <= 20 && y <= 185){
-              console.log("ObjetoAtual antes"+objAtual);
-              objAtual = i;
-              console.log("ObjAtual depois" + objAtual);
-              break;
-            }
-          }
-        }
-    canvas.onmouseup = function(evt){
-      if(objAtual != -1){
-        todasCurvas[curvaAtual].px[objAtual] = evt.clientX;
-        todasCurvas[curvaAtual].py[objAtual] = evt.clientY;
-      }
-    }
 
     var pontos = CheckBox("pontoControle");
     var poligonos = CheckBox("poligonoControle");
@@ -145,7 +159,7 @@ function drawPoint(ctx,x,y, index){//FUNCIONA
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
   if(index==curvaAtual)ctx.strokeStyle = "#f30707"; //vermelho
   ctx.beginPath(); //pra começar uma nova figura geometrica
-  ctx.arc(x-rect.left,y-rect.top,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
+  ctx.arc(x,y,3,0,2*Math.PI); //ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise); -425 e -10 porque o quadro ta no meio da tela
   ctx.stroke();
 }
 function drawReta(ctx,x,y,x1,y1, index){
@@ -154,8 +168,8 @@ function drawReta(ctx,x,y,x1,y1, index){
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
   if(index==curvaAtual)ctx.strokeStyle = "#f30707"; //vermelho
   ctx.beginPath(); 
-  ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
-  ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+  ctx.moveTo(x, y); //move o eixo
+  ctx.lineTo(x1, y1); //cria a linha do eixo até aí
   ctx.stroke();
 }
 function drawCurva(ctx,x,y,x1,y1, index){
@@ -164,8 +178,8 @@ function drawCurva(ctx,x,y,x1,y1, index){
   if(index!=curvaAtual)ctx.strokeStyle = "#000000"; //PRETO
   if(index==curvaAtual)ctx.strokeStyle = "#166802"; //verde
   ctx.beginPath(); 
-  ctx.moveTo(x-rect.left, y-rect.top); //move o eixo
-  ctx.lineTo(x1-rect.left, y1-rect.top); //cria a linha do eixo até aí
+  ctx.moveTo(x, y); //move o eixo
+  ctx.lineTo(x1, y1); //cria a linha do eixo até aí
   ctx.stroke();
 }
 function novaCurva(){
@@ -197,6 +211,7 @@ Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvalia
 <button onclick="ultimaCurva()">Curva Anterior</button>
 <button onclick="proxCurva()">Proxima Curva</button>
 <button onclick="atualizar()">Sicronizar</button>
+<button onclick="arrastarPonto()">Arrastar</button>
 </p>
 <p>
 <input type="checkbox" name="pontoControle" checked> Pontos de Controle<br>
