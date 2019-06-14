@@ -142,7 +142,7 @@ function atualizar(){//a ideia é redesenhar todos os pontos, retas e curvas
     }
     if(curvas){
       for(i=0; i<todasCurvas.length; i++){
-        if(todasCurvas[i].px.length>2)todasCurvas[i].createcurve(numAvaliacoes);
+        if(todasCurvas[i].px.length>1)todasCurvas[i].createcurve(numAvaliacoes);
         //console.log(todasCurvas[i].cx);
         if(todasCurvas[i].cx.length>1){
           for(j=1; j<todasCurvas[i].cx.length; j++){
@@ -211,7 +211,7 @@ function removerPonto(){
   todasCurvas[curvaAtual].px.pop();
   todasCurvas[curvaAtual].py.pop();
   console.log(todasCurvas[curvaAtual]);
-  // atualizar();
+  atualizar();
 }
 function ultimaCurva(){
   curvaAtual --;
