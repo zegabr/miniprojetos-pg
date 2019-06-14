@@ -70,19 +70,20 @@ function arrastarPonto(){
     canvas.onmousedown = function(evt){
       var rect = canvas.getBoundingClientRect();
       objAtual = -1;
-      var mx = evt.clientX;
-      var my = evt.clientY;
+      var mx = evt.clientX - rect.left + window.pageXOffset;
+      var my = evt.clientY - rect.top + window.pageYOffset;
       for(i=0;i<todasCurvas[curvaAtual].px.length;i++){
-        // console.log("mouseX"+mx);
-        // console.log("mouseY"+my);
+        console.log("mouseX"+mx);
+        console.log("mouseY"+my);
         // console.log("pontoX"+(todasCurvas[curvaAtual].px[i] ));
         // console.log("pontoY"+(todasCurvas[curvaAtual].py[i] ));
+
         var deltax = Math.abs((todasCurvas[curvaAtual].px[i] ) - mx);
         var deltay = Math.abs((todasCurvas[curvaAtual].py[i] ) - my);
         // console.log("x "+x);
         // console.log("y "+y);
         // console.log("i "+i);
-        if( deltax <= 25 && deltay <= 185){
+        if( deltax <= 10 && deltay <= 10){
           console.log("ObjetoAtual antes"+objAtual);
           objAtual = i;
           console.log("ObjAtual depois" + objAtual);
@@ -91,8 +92,9 @@ function arrastarPonto(){
       }
     }
     canvas.onmouseup = function(evt){
-      var mx = evt.clientX;
-      var my = evt.clientY;
+      var rect = canvas.getBoundingClientRect();
+      var mx = evt.clientX - rect.left + window.pageXOffset;
+      var my = evt.clientY - rect.top + window.pageYOffset;
       if(objAtual != -1 && arrasta){
         todasCurvas[curvaAtual].px[objAtual] = mx;
         todasCurvas[curvaAtual].py[objAtual] = my;
@@ -230,7 +232,7 @@ Qual o numero de avaliações para a curva?  <input type="text" id="numeroAvalia
 <button onclick="deletarCurva()">Deletar Curva</button>
 <button onclick="ultimaCurva()">Curva Anterior</button>
 <button onclick="proxCurva()">Proxima Curva</button>
-<button onclick="arrastarPonto()">Arrastar ou Selecionar Ponto</button>
+<button onclick="arrastarPonto()">Arrastar/Selecionar Ponto</button>
 <button onclick="removerPonto()">Remover Ponto</button>
 <button onclick="atualizar()">Sicronizar</button>
 </p>
