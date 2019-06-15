@@ -1,4 +1,4 @@
-#instrucoes
+# instrucoes
 
 -digitar um numero inteiro no campo de avaliacoes
 
